@@ -8,7 +8,7 @@ Upload a photo of your room and place one of our beautiful Mandala Life Art pouf
 
 ## ✨ Demo
 
-🟢 [Click here to try it on Streamlit](https://share.streamlit.io/YOUR_USERNAME/pouf-placer/main/app.py)
+🟢 [Click here to try it on Streamlit](https://pouf-placer-gszdz8qf3jmxuk3xaly2ei.streamlit.app/)
 
 > *(replace with your real Streamlit app link)*
 
