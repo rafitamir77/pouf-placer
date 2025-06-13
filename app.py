@@ -13,22 +13,18 @@ pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
 
 if uploaded_file:
-    # Load and resize room image
+    # Load and prepare image
     room_image = Image.open(uploaded_file).convert("RGBA")
     room_width, room_height = room_image.size
 
-    st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100)
+    background_np = np.array(room_image.convert("RGB"))  # ✅ safe conversion
 
-    # ✅ Convert room image to RGB NumPy array for canvas
-    background_np = np.array(room_image.convert("RGB"))
-
-    # Display canvas for click-to-place
+    # Canvas
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
         stroke_color="white",
-        background_image=background_np,
+        background_image=background_np,  # ✅ only assigned if uploaded_file is valid
         update_streamlit=True,
         height=room_height,
         width=room_width,
