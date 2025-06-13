@@ -30,13 +30,7 @@ if uploaded_file:
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
     # Force canvas to render using transparent dot
-    initial_drawing = [{
-        "type": "circle",
-        "left": 1,
-        "top": 1,
-        "radius": 0.01,
-        "fill": "rgba(0,0,0,0)"
-    }]
+
 
     # Center canvas in layout
     col1, col2, col3 = st.columns([1, 4, 1])
@@ -46,7 +40,6 @@ if uploaded_file:
             stroke_width=0,
             stroke_color="white",
             background_image=background_rgb,
-            initial_drawing=initial_drawing,
             update_streamlit=True,
             height=display_height,
             width=display_width,
