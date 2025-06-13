@@ -6,6 +6,7 @@ from streamlit_drawable_canvas import st_canvas
 
 st.set_page_config(layout="wide")
 st.title("🛋️ Try a Pouf in Your Room!")
+scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
 # Load pouf
 pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
@@ -17,7 +18,7 @@ if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
     room_width, room_height = room_image.size
 
-    background_np = np.array(room_image.convert("RGB"))  # ✅ safe conversion
+    background_np = room_image.convert("RGB")
 
     # Canvas
     canvas_result = st_canvas(
