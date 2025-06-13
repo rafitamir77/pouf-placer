@@ -17,13 +17,13 @@ if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
 
     # Resize pouf to match room scale (arbitrary default)
-    base_pouf = pouf_image.resize((150, 150))
+    base_pouf = pouf_image.resize((500, 500))
 
     # Let user drag pouf (simple x/y sliders)
     st.sidebar.header("🪑 Adjust Pouf Placement")
     x_pos = st.sidebar.slider("Horizontal (X)", 0, room_image.width, int(room_image.width / 2))
     y_pos = st.sidebar.slider("Vertical (Y)", 0, room_image.height, int(room_image.height / 2))
-    scale = st.sidebar.slider("Scale %", 20, 300, 100)
+    scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
     # Scale pouf
     new_size = (int(base_pouf.width * scale / 100), int(base_pouf.height * scale / 100))
