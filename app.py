@@ -22,7 +22,11 @@ if uploaded_file:
     aspect_ratio = room_image.height / room_image.width
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
-    resized_room = room_image.resize((display_width, display_height))
+    #resized_room = room_image.resize((display_width, display_height))
+    if "last_image" in st.session_state:
+        resized_room = st.session_state["last_image"].resize((display_width, display_height))
+    else:
+        resized_room = room_image.resize((display_width, display_height))
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
     background_rgb = resized_room.convert("RGB")
@@ -44,6 +48,9 @@ if uploaded_file:
         drawing_mode="point",
         key="canvas"
     )
+    if st.button("🔄 Reset Canvas"):
+        if "last_image" in st.session_state:
+            del st.session_state["last_image"]
 
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
@@ -69,6 +76,7 @@ if uploaded_file:
         # Show result
         st.markdown("### 🖼️ Result Preview")
         st.image(result, use_column_width=True)
+        st.session_state["last_image"] = result
 
         # Download
         buf = io.BytesIO()
