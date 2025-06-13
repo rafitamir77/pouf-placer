@@ -25,7 +25,7 @@ if uploaded_file:
     resized_room = room_image.resize((display_width, display_height))
 
     # Convert to NumPy array (required by st_canvas)
-    background_np = np.array(resized_room.convert("RGB"))
+    background_rgb = resized_room.convert("RGB")
 
     # Sidebar: Pouf scale control
     st.sidebar.header("🪑 Adjust Pouf")
@@ -38,7 +38,7 @@ if uploaded_file:
             fill_color="rgba(255, 165, 0, 0.3)",
             stroke_width=0,
             stroke_color="white",
-            background_image=background_np,
+            background_image=background_rgb,
             update_streamlit=True,
             height=display_height,
             width=display_width,
