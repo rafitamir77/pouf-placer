@@ -17,16 +17,18 @@ if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
     room_width, room_height = room_image.size
 
-    # Display canvas to get click location
     st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
-    # Convert to RGB for canvas (canvas doesn't support RGBA)
+    # ✅ Convert room image to RGB NumPy array for canvas
+    background_np = np.array(room_image.convert("RGB"))
+
+    # Display canvas for click-to-place
     canvas_result = st_canvas(
-        fill_color="rgba(255, 165, 0, 0.3)",  # irrelevant
+        fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
         stroke_color="white",
-        background_image=room_image.convert("RGB"),
+        background_image=background_np,
         update_streamlit=True,
         height=room_height,
         width=room_width,
@@ -34,7 +36,6 @@ if uploaded_file:
         key="canvas",
     )
 
-    # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
         last_click = canvas_result.json_data["objects"][-1]
         x_pos = int(last_click["left"])
@@ -44,7 +45,7 @@ if uploaded_file:
         new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
         scaled_pouf = pouf_image.resize(new_size)
 
-        # Create transparent overlay
+        # Paste on transparent overlay
         overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
@@ -52,7 +53,6 @@ if uploaded_file:
 
         st.image(result, caption="Preview with Pouf", use_column_width=True)
 
-        # Download button
         buf = io.BytesIO()
         result.save(buf, format="PNG")
         byte_im = buf.getvalue()
