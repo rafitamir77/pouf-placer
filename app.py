@@ -19,14 +19,16 @@ if uploaded_file:
     room_image = ImageOps.exif_transpose(Image.open(uploaded_file)).convert("RGBA")
 
     # Resize for canvas display
-    max_display_width = 900
+    max_display_width = 500
     aspect_ratio = room_image.height / room_image.width
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
+    resized_room = room_image.resize((display_width, display_height))
+
     if "last_image" in st.session_state:
+        # Show latest image with pouf
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
-    else:
-        resized_room = room_image.resize((display_width, display_height))
+
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
     background_rgb = resized_room.convert("RGB")
