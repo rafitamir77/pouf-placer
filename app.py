@@ -39,7 +39,7 @@ if uploaded_file:
             del st.session_state["last_image"]
 
     # Canvas
-    st.info("🖱️ Click on the image below to place your pouf:")
+    st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
@@ -74,8 +74,8 @@ if uploaded_file:
         result = Image.alpha_composite(room_image, overlay)
 
         # Show result
-        #st.markdown("### 🖼️ Result Preview:")
-        #st.image(result, use_column_width=True)
+        st.markdown("### 🖼️ Result Preview:")
+        st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
 
         # Download
