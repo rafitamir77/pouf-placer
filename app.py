@@ -4,6 +4,7 @@ import numpy as np
 import io
 from streamlit_drawable_canvas import st_canvas
 
+
 st.set_page_config(layout="wide")
 st.title("🛋️ Try a Pouf in Your Room!")
 
@@ -22,7 +23,6 @@ if uploaded_file:
     aspect_ratio = room_image.height / room_image.width
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
-    #resized_room = room_image.resize((display_width, display_height))
     if "last_image" in st.session_state:
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
     else:
@@ -34,6 +34,9 @@ if uploaded_file:
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
+    if st.sidebar.button("🔄 Reset Canvas"):
+        if "last_image" in st.session_state:
+            del st.session_state["last_image"]
 
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
@@ -48,9 +51,6 @@ if uploaded_file:
         drawing_mode="point",
         key="canvas"
     )
-    if st.button("🔄 Reset Canvas"):
-        if "last_image" in st.session_state:
-            del st.session_state["last_image"]
 
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
@@ -74,9 +74,9 @@ if uploaded_file:
         result = Image.alpha_composite(room_image, overlay)
 
         # Show result
-        st.markdown("### 🖼️ Result Preview")
-        st.image(result, use_column_width=True)
-        st.session_state["last_image"] = result
+        #st.markdown("### 🖼️ Result Preview")
+        #st.image(result, use_column_width=True)
+        #st.session_state["last_image"] = result
 
         # Download
         buf = io.BytesIO()
