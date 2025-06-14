@@ -1,5 +1,6 @@
 streamlit==1.27.2
 opencv-python-headless
+streamlit-js-eval
 Pillow
 numpy
 torch
