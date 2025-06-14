@@ -4,8 +4,9 @@ import numpy as np
 import io
 from streamlit_drawable_canvas import st_canvas
 
+
 st.set_page_config(layout="wide")
-st.title("🏫️ Try a Pouf in Your Room!")
+st.title("🛋️ Try a Pouf in Your Room!")
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
@@ -22,19 +23,17 @@ if uploaded_file:
     aspect_ratio = room_image.height / room_image.width
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
-
     if "last_image" in st.session_state:
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
     else:
         resized_room = room_image.resize((display_width, display_height))
 
-    # Convert resized image to NumPy RGB array
+    # Convert resized image to NumPy RGB array (✅ required for canvas)
     background_rgb = resized_room.convert("RGB")
 
     # Sidebar controls
-    st.sidebar.header("🫑 Adjust Pouf")
+    st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
-
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
@@ -74,29 +73,13 @@ if uploaded_file:
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
         result = Image.alpha_composite(room_image, overlay)
 
-        # Store updated image in session
+        # Show result
+        #st.markdown("### 🖼️ Result Preview:")
+        #st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
 
-        # Display updated image in canvas
-        resized_room = result.resize((display_width, display_height))
-        background_rgb = resized_room.convert("RGB")
-
-        canvas_result = st_canvas(
-            fill_color="rgba(255, 165, 0, 0.3)",
-            stroke_width=0,
-            stroke_color="white",
-            background_image=background_rgb,
-            update_streamlit=True,
-            height=display_height,
-            width=display_width,
-            drawing_mode="point",
-            key="canvas_updated"
-        )
-
         # Download
-        buf = io.BytesIO()
+        buf = io.BytesIO()  
         result.save(buf, format="PNG")
         byte_im = buf.getvalue()
-        st.download_button("👅 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
-else:
-    st.info("Please upload a room photo to get started.")
+        st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
