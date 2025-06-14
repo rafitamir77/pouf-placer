@@ -14,6 +14,9 @@ pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 # Upload room image
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "jpeg", "png"])
 
+# Initialize click data
+click_data = st.session_state.get("clicked_data")
+
 if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
     display_width = 900
@@ -30,14 +33,36 @@ if uploaded_file:
     st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
-    # Get click data from query params
-    click_data = st.experimental_get_query_params()
+    # Display image and setup JS click listener
+    clicked = components.html(f"""
+        <script>
+        window.addEventListener("message", (event) => {{
+            if (event.data.type === "streamlit:setComponentValue") {{
+                window.parent.postMessage({{ isStreamlitMessage: true, type: "streamlit:setComponentValue", value: event.data.value }}, "*");
+            }}
+        }});
 
-    if "x" in click_data and "y" in click_data:
-        x = int(click_data["x"][0])
-        y = int(click_data["y"][0])
-        w = int(click_data.get("width", [display_width])[0])
-        h = int(click_data.get("height", [display_height])[0])
+        window.addEventListener("DOMContentLoaded", function() {{
+            const img = document.getElementById("room_image");
+            img.style.cursor = "crosshair";
+            img.addEventListener("click", function(e) {{
+                const rect = img.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const payload = {{ x: Math.round(x), y: Math.round(y), width: img.width, height: img.height }};
+                window.parent.postMessage({{ type: "streamlit:setComponentValue", value: payload }}, "*");
+            }});
+        }});
+        </script>
+        <img id="room_image" src="data:image/png;base64,{base64_img}" width="{display_width}"/>
+    """, height=display_height + 50)
+
+    # Handle click
+    if clicked and isinstance(clicked, dict) and "x" in clicked and "y" in clicked:
+        x = int(clicked["x"])
+        y = int(clicked["y"])
+        w = int(clicked.get("width", display_width))
+        h = int(clicked.get("height", display_height))
 
         # Map click to original image size
         scale_x = room_image.width / w
@@ -61,27 +86,6 @@ if uploaded_file:
         result.save(buf, format="PNG")
         byte_im = buf.getvalue()
         st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
-
-    else:
-        # Inject image and click-capture script
-        components.html(f"""
-        <script>
-          window.addEventListener('DOMContentLoaded', function() {{
-            const img = document.getElementById("room_image");
-            if (!img) return;
-
-            img.style.cursor = "crosshair";
-            img.addEventListener("click", function(e) {{
-              const rect = img.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const y = e.clientY - rect.top;
-              const query = `?x=${{x}}&y=${{y}}&width=${{img.width}}&height=${{img.height}}`;
-              window.location.search = query;
-            }});
-          }});
-        </script>
-        <img id="room_image" src="data:image/png;base64,{base64_img}" width="{display_width}"/>
-        """, height=display_height + 50)
 
 else:
     st.info("Please upload a room photo to get started.")
