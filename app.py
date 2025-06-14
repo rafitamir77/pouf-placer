@@ -31,11 +31,11 @@ if uploaded_file:
 
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
-    background_rgb = np.array(resized_room.convert("RGB"))
+    background_rgb = resized_room.convert("RGB")
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100)
+    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=5)
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
