@@ -81,9 +81,9 @@ if uploaded_file:
         
         st.experimental_rerun()
 
-# Download
-buf = io.BytesIO()
-result.save(buf, format="PNG")
-byte_im = buf.getvalue()
-st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
+    # Download
+    buf = io.BytesIO()
+    result.save(buf, format="PNG")
+    byte_im = buf.getvalue()
+    st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
 
