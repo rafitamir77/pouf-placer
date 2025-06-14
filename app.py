@@ -7,61 +7,92 @@ import base64
 import json
 
 st.set_page_config(layout="wide")
-st.title("🛋️ Try a Pouf in Your Room!")
+st.title("🏫️ Try a Pouf in Your Room!")
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 
-# Sidebar
-st.sidebar.header("🪑 Adjust Pouf")
+# Upload room image
+uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "jpeg", "png"])
+
+# Sidebar scale
+st.sidebar.header("🫑 Adjust Pouf")
 scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
-# Upload
-uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "jpeg", "png"])
+# Initialize click data
+if "click_data" not in st.session_state:
+    st.session_state["click_data"] = None
 
 if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
     display_width = 900
     aspect_ratio = room_image.height / room_image.width
     display_height = int(display_width * aspect_ratio)
-    resized_image = room_image.resize((display_width, display_height))
 
-    # Convert to base64
+    # Convert to base64 for HTML
     buffered = io.BytesIO()
+    resized_image = room_image.resize((display_width, display_height))
     resized_image.save(buffered, format="PNG")
     base64_img = base64.b64encode(buffered.getvalue()).decode()
 
-    # Render image and capture clicks
-    components.html(f"""
-        <div style="position: relative; width: {display_width}px; height: {display_height}px;">
-            <img id="room_image" src="data:image/png;base64,{base64_img}" 
-                 width="{display_width}" height="{display_height}" style="cursor: crosshair;">
-        </div>
+    clicked = components.html(f"""
+        <img id=\"room_image_custom\" src=\"data:image/png;base64,{base64_img}\" 
+             width=\"{display_width}\" height=\"{display_height}\" style=\"cursor:crosshair;\"/>
         <script>
-        const img = document.getElementById("room_image");
+        const img = document.getElementById("room_image_custom");
         if (img) {{
-            img.onclick = function(e) {{
+            console.log("JS: Image loaded and click listener added.");
+            img.addEventListener("click", function(e) {{
                 const rect = img.getBoundingClientRect();
                 const x = Math.round(e.clientX - rect.left);
                 const y = Math.round(e.clientY - rect.top);
-                const payload = {{ x: x, y: y }};
-                console.log("📍 Clicked at:", payload);
-                const streamlitEvent = new CustomEvent("streamlit:rendered", {{
-                    detail: {{
-                        messageType: "streamlit:customClick",
-                        value: JSON.stringify(payload)
-                    }}
-                }});
-                window.parent.document.dispatchEvent(streamlitEvent);
-            }}
+                const payload = {{ x: x, y: y, width: img.width, height: img.height }};
+                const jsonStr = JSON.stringify(payload);
+                console.log("JS: Click coordinates sent:", jsonStr);
+                window.parent.postMessage({{
+                    isStreamlitMessage: true,
+                    type: "streamlit:setComponentValue",
+                    value: jsonStr
+                }}, "*");
+            }});
         }}
         </script>
-    """, height=display_height + 50)
+    """, height=display_height + 60)
 
-    # Use Streamlit's input method for JS → Python (use streamlit_js_eval package if needed)
-    st.warning("⚠️ To fully support JS to Python click transfer, install `streamlit_js_eval` or switch to custom components.")
-    st.code("pip install streamlit_js_eval")
+    if clicked:
+        try:
+            coords = json.loads(clicked)
+            x = int(coords["x"])
+            y = int(coords["y"])
+            w = int(coords.get("width", display_width))
+            h = int(coords.get("height", display_height))
 
-    st.stop()  # Prevent error until streamlit_js_eval or custom JS component is integrated
+            # Map click to original image size
+            scale_x = room_image.width / w
+            scale_y = room_image.height / h
+            x_pos = int(x * scale_x)
+            y_pos = int(y * scale_y)
+
+            # Scale pouf
+            new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
+            scaled_pouf = pouf_image.resize(new_size)
+
+            # Overlay pouf
+            overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
+            overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
+            result = Image.alpha_composite(room_image, overlay)
+
+            st.image(result, caption="Your Room with Pouf", use_column_width=True)
+
+            # Download
+            buf = io.BytesIO()
+            result.save(buf, format="PNG")
+            byte_im = buf.getvalue()
+            st.download_button("📅 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
+        except Exception as e:
+            st.warning(f"⚠️ Error parsing click: {e}")
+    else:
+        st.info("Click on the image to place the pouf.")
+
 else:
-    st.info("📤 Upload an image to get started.")
+    st.info("Please upload a room photo to get started.")
