@@ -5,7 +5,7 @@ import io
 from streamlit_drawable_canvas import st_canvas
 
 st.set_page_config(layout="wide")
-st.title("🛋️ Try a Pouf in Your Room!")
+st.title("🏫️ Try a Pouf in Your Room!")
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
@@ -29,10 +29,10 @@ if uploaded_file:
         resized_room = room_image.resize((display_width, display_height))
 
     # Convert resized image to NumPy RGB array
-    background_rgb = np.array(resized_room.convert("RGB"))
+    background_rgb = resized_room.convert("RGB")
 
     # Sidebar controls
-    st.sidebar.header("🪑 Adjust Pouf")
+    st.sidebar.header("🫑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
     if st.sidebar.button("🔄 Reset Canvas"):
@@ -45,7 +45,7 @@ if uploaded_file:
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
         stroke_color="white",
-        background_image=Image.fromarray(background_rgb),
+        background_image=background_rgb,
         update_streamlit=True,
         height=display_height,
         width=display_width,
@@ -77,13 +77,26 @@ if uploaded_file:
         # Store updated image in session
         st.session_state["last_image"] = result
 
-        # Display updated image
-        st.image(result, caption="Preview with Pouf", use_column_width=True)
+        # Display updated image in canvas
+        resized_room = result.resize((display_width, display_height))
+        background_rgb = resized_room.convert("RGB")
+
+        canvas_result = st_canvas(
+            fill_color="rgba(255, 165, 0, 0.3)",
+            stroke_width=0,
+            stroke_color="white",
+            background_image=background_rgb,
+            update_streamlit=True,
+            height=display_height,
+            width=display_width,
+            drawing_mode="point",
+            key="canvas_updated"
+        )
 
         # Download
         buf = io.BytesIO()
         result.save(buf, format="PNG")
         byte_im = buf.getvalue()
-        st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
+        st.download_button("👅 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
 else:
     st.info("Please upload a room photo to get started.")
