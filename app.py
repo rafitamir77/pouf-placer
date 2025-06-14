@@ -14,8 +14,13 @@ pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 # Upload room image
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "jpeg", "png"])
 
+# Sidebar scale
+st.sidebar.header("🪑 Adjust Pouf")
+scale = st.sidebar.slider("Scale %", 20, 500, 100)
+
 # Initialize click data
-click_data = st.session_state.get("clicked_data")
+if "click_data" not in st.session_state:
+    st.session_state["click_data"] = None
 
 if uploaded_file:
     room_image = Image.open(uploaded_file).convert("RGBA")
@@ -29,37 +34,33 @@ if uploaded_file:
     resized_image.save(buffered, format="PNG")
     base64_img = base64.b64encode(buffered.getvalue()).decode()
 
-    # Sidebar scale
-    st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100)
-
     # Display image and setup JS click listener
-    clicked = components.html(f"""
+    components.html(f"""
         <script>
-        window.addEventListener("DOMContentLoaded", function() {{
-            const img = document.getElementById("room_image");
-            img.style.cursor = "crosshair";
-            img.addEventListener("click", function(e) {{
-                const rect = img.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const payload = {{ x: Math.round(x), y: Math.round(y), width: img.width, height: img.height }};
-                console.log("📸 Image clicked at:", payload);  // ✅ DEBUG in browser console
-                window.parent.postMessage({{
-                    isStreamlitMessage: true,
-                    type: "streamlit:setComponentValue",
-                    value: payload
-                }}, "*");
-            }});
-        }});
+        const streamlitReceiveMessage = (event) => {{
+            if (event.data.type === "streamlit:render") {{
+                const img = document.getElementById("room_image");
+                img.style.cursor = "crosshair";
+                img.onclick = function(e) {{
+                    const rect = img.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const payload = {{ x: Math.round(x), y: Math.round(y), width: img.width, height: img.height }};
+                    window.parent.postMessage({{
+                        isStreamlitMessage: true,
+                        type: "streamlit:setComponentValue",
+                        value: payload
+                    }}, "*");
+                }}
+            }}
+        }};
+        window.addEventListener("message", streamlitReceiveMessage);
         </script>
         <img id="room_image" src="data:image/png;base64,{base64_img}" width="{display_width}"/>
-    """, height=display_height + 50)
+    """, height=display_height + 50, key="clickable_image")
 
-    # Handle click
-    if clicked and isinstance(clicked, dict) and "x" in clicked and "y" in clicked:
-        st.success(f"✅ Image clicked at: ({clicked['x']}, {clicked['y']})")  # ✅ Debug in Streamlit
-
+    clicked = st._get_component_value("clickable_image")
+    if clicked and isinstance(clicked, dict) and "x" in clicked:
         x = int(clicked["x"])
         y = int(clicked["y"])
         w = int(clicked.get("width", display_width))
