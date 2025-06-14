@@ -30,14 +30,15 @@ if uploaded_file:
     st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500, 100)
 
-    # Capture click from JS
+    # Get click data from query params
     click_data = st.experimental_get_query_params()
-    x = int(click_data.get("x", [0])[0])
-    y = int(click_data.get("y", [0])[0])
-    w = int(click_data.get("width", [display_width])[0])
-    h = int(click_data.get("height", [display_height])[0])
 
-    if x > 0 and y > 0:
+    if "x" in click_data and "y" in click_data:
+        x = int(click_data["x"][0])
+        y = int(click_data["y"][0])
+        w = int(click_data.get("width", [display_width])[0])
+        h = int(click_data.get("height", [display_height])[0])
+
         # Map click to original image size
         scale_x = room_image.width / w
         scale_y = room_image.height / h
@@ -61,25 +62,26 @@ if uploaded_file:
         byte_im = buf.getvalue()
         st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
 
-    # Inject custom HTML + JS to capture click
-    components.html(f"""
-    <script>
-      window.addEventListener('DOMContentLoaded', function() {{
-        const img = document.getElementById("room_image");
-        if (!img) return;
+    else:
+        # Inject image and click-capture script
+        components.html(f"""
+        <script>
+          window.addEventListener('DOMContentLoaded', function() {{
+            const img = document.getElementById("room_image");
+            if (!img) return;
 
-        img.style.cursor = "crosshair";
-        img.addEventListener("click", function(e) {{
-          const rect = img.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const query = `?x=${{x}}&y=${{y}}&width=${{img.width}}&height=${{img.height}}`;
-          window.location.search = query;
-        }});
-      }});
-    </script>
-    <img id="room_image" src="data:image/png;base64,{base64_img}" width="{display_width}"/>
-    """, height=display_height + 50)
+            img.style.cursor = "crosshair";
+            img.addEventListener("click", function(e) {{
+              const rect = img.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              const query = `?x=${{x}}&y=${{y}}&width=${{img.width}}&height=${{img.height}}`;
+              window.location.search = query;
+            }});
+          }});
+        </script>
+        <img id="room_image" src="data:image/png;base64,{base64_img}" width="{display_width}"/>
+        """, height=display_height + 50)
 
 else:
     st.info("Please upload a room photo to get started.")
