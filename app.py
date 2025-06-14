@@ -31,7 +31,7 @@ if uploaded_file:
 
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
-    background_rgb = room_image.convert("RGB")
+    background_rgb = resized_room.convert("RGB")
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
