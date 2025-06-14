@@ -45,13 +45,14 @@ if uploaded_file:
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
-        stroke_width=0,
+        stroke_width=3,
         stroke_color="white",
         background_image=background_rgb,
         update_streamlit=True,
         height=display_height,
         width=display_width,
         drawing_mode="point",
+        display_toolbar=False,
         key="canvas"
     )
 
