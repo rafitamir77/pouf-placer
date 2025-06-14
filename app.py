@@ -39,7 +39,7 @@ if uploaded_file:
             del st.session_state["last_image"]
 
     # Canvas
-    st.info("🖱️ Click on the image below to place your pouf.")
+    st.info("🖱️ Click on the image below to place your pouf:")
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
