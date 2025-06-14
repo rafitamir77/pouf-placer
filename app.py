@@ -78,8 +78,11 @@ if uploaded_file:
         #st.markdown("### 🖼️ Result Preview")
         #st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
-        
-        st.experimental_rerun()
+        st.session_state["rerun_trigger"] = True
+       
+        if st.session_state.get("rerun_trigger"):
+            st.session_state["rerun_trigger"] = False  # Reset the flag
+            st.experimental_rerun()
 
         # Download
         buf = io.BytesIO()
