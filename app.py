@@ -38,19 +38,7 @@ if uploaded_file:
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
 
-    # Canvas
-    st.info("🖱️ Click on the image below to place your pouf.")
-    canvas_result = st_canvas(
-        fill_color="rgba(255, 165, 0, 0.3)",
-        stroke_width=0,
-        stroke_color="white",
-        background_image=background_rgb,
-        update_streamlit=True,
-        height=display_height,
-        width=display_width,
-        drawing_mode="point",
-        key="canvas"
-    )
+
 
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
@@ -72,14 +60,43 @@ if uploaded_file:
         overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
         result = Image.alpha_composite(room_image, overlay)
+        background_rgb = result.convert("RGB")
 
         # Show result
         #st.markdown("### 🖼️ Result Preview")
         #st.image(result, use_column_width=True)
-        #st.session_state["last_image"] = result
-
+        st.session_state["last_image"] = result
+        
+        # Canvas
+        st.info("🖱️ Click on the image below to place your pouf.")
+        canvas_result = st_canvas(
+            fill_color="rgba(255, 165, 0, 0.3)",
+            stroke_width=0,
+            stroke_color="white",
+            background_image=background_rgb,
+            update_streamlit=True,
+            height=display_height,
+            width=display_width,
+            drawing_mode="point",
+            key="canvas"
+        )
         # Download
         buf = io.BytesIO()
         result.save(buf, format="PNG")
         byte_im = buf.getvalue()
         st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
+
+else
+    # Canvas
+    st.info("🖱️ Click on the image below to place your pouf.")
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 165, 0, 0.3)",
+        stroke_width=0,
+        stroke_color="white",
+        background_image=background_rgb,
+        update_streamlit=True,
+        height=display_height,
+        width=display_width,
+        drawing_mode="point",
+        key="canvas"
+    )
