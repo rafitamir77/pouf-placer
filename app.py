@@ -86,7 +86,7 @@ if uploaded_file:
         byte_im = buf.getvalue()
         st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
 
-else
+else:
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
