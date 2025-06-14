@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import io
 import base64
+import json
 
 st.set_page_config(layout="wide")
 st.title("🛋️ Try a Pouf in Your Room!")
@@ -34,30 +35,13 @@ if uploaded_file:
     resized_image.save(buffered, format="PNG")
     base64_img = base64.b64encode(buffered.getvalue()).decode()
 
-    # Declare custom Streamlit component to capture click events
-    import streamlit.components.v1 as components
-    _click_component = components.declare_component("clickable_image", path=None)
-
-    clicked = _click_component(
-        image=base64_img,
-        width=display_width,
-        height=display_height,
-        default=None
-    )
-
-    components.html(f"""
+    clicked = components.html(f"""
+        <img id=\"room_image_custom\" src=\"data:image/png;base64,{base64_img}\" 
+             width=\"{display_width}\" height=\"{display_height}\" style=\"cursor:crosshair;\"/>
         <script>
-        const imgId = "room_image_custom";
-        let img = document.getElementById(imgId);
-        if (!img) {{
-            img = document.createElement("img");
-            img.src = "data:image/png;base64,{base64_img}";
-            img.id = imgId;
-            img.width = {display_width};
-            img.height = {display_height};
-            img.style.cursor = "crosshair";
-            document.body.appendChild(img);
-            img.onclick = function(e) {{
+        const img = window.parent.document.getElementById("room_image_custom");
+        if (img) {{
+            img.addEventListener("click", function(e) {{
                 const rect = img.getBoundingClientRect();
                 const x = Math.round(e.clientX - rect.left);
                 const y = Math.round(e.clientY - rect.top);
@@ -68,14 +52,13 @@ if uploaded_file:
                     type: "streamlit:setComponentValue",
                     value: jsonStr
                 }}, "*");
-            }}
+            }});
         }}
         </script>
     """, height=display_height + 60)
 
     if clicked:
         try:
-            import json
             coords = json.loads(clicked)
             x = int(coords["x"])
             y = int(coords["y"])
