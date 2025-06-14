@@ -50,6 +50,7 @@ if uploaded_file:
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const payload = {{ x: Math.round(x), y: Math.round(y), width: img.width, height: img.height }};
+                console.log("Image clicked at:", payload);  // ✅ DEBUG LINE
                 window.parent.postMessage({{ type: "streamlit:setComponentValue", value: payload }}, "*");
             }});
         }});
@@ -59,6 +60,8 @@ if uploaded_file:
 
     # Handle click
     if clicked and isinstance(clicked, dict) and "x" in clicked and "y" in clicked:
+        st.success(f"✅ Image clicked at: ({clicked['x']}, {clicked['y']})")  # ✅ Debug feedback in Streamlit UI
+
         x = int(clicked["x"])
         y = int(clicked["y"])
         w = int(clicked.get("width", display_width))
