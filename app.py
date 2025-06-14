@@ -39,9 +39,21 @@ if uploaded_file:
             del st.session_state["last_image"]
 
 
-
+    # Canvas
+    st.info("🖱️ Click on the image below to place your pouf.")
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 165, 0, 0.3)",
+        stroke_width=0,
+        stroke_color="white",
+        background_image=background_rgb,
+        update_streamlit=True,
+        height=display_height,
+        width=display_width,
+        drawing_mode="point",
+        key="canvas"
+    )
     # If user clicked
-    if canvas_result and canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
+    if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
@@ -67,22 +79,11 @@ if uploaded_file:
         #st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
         
-        # Canvas
-        st.info("🖱️ Click on the image below to place your pouf.")
-        canvas_result = st_canvas(
-            fill_color="rgba(255, 165, 0, 0.3)",
-            stroke_width=0,
-            stroke_color="white",
-            background_image=background_rgb_new,
-            update_streamlit=True,
-            height=display_height,
-            width=display_width,
-            drawing_mode="point",
-            key="canvas"
-        )
-        # Download
-        buf = io.BytesIO()
-        result.save(buf, format="PNG")
-        byte_im = buf.getvalue()
-        st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
+        st.experimental_rerun()
+
+# Download
+buf = io.BytesIO()
+result.save(buf, format="PNG")
+byte_im = buf.getvalue()
+st.download_button("📥 Download Image", byte_im, "your_room_with_pouf.png", "image/png")
 
