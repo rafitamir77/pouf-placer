@@ -32,7 +32,7 @@ if uploaded_file:
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
     # background_rgb = resized_room.convert("RGB")
-    background_rgb = np.array(resized_room.convert("RGB"))
+    background_rgb = resized_room.convert("RGB")
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
@@ -62,13 +62,14 @@ if uploaded_file:
         y_scaled = int(last_click["top"])
 
         # Map click to original image
+        new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
         scale_x = room_image.width / display_width
         scale_y = room_image.height / display_height
-        x_pos = int(x_scaled * scale_x)
-        y_pos = int(y_scaled * scale_y)
+        x_pos = int(x_scaled * scale_x - new_size[0] / 2)
+        y_pos = int(y_scaled * scale_y - new_size[1] / 2)
+
 
         # Resize pouf
-        new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
         scaled_pouf = pouf_image.resize(new_size)
 
         # Place pouf
