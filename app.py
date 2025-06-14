@@ -41,7 +41,7 @@ if uploaded_file:
 
 
     # If user clicked
-    if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
+    if canvas_result and canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
