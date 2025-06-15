@@ -7,11 +7,6 @@ from streamlit_drawable_canvas import st_canvas
 Pouf_Ratio = 0.25
 scale_key = "scale_slider"
 
-if scale_key not in st.session_state:
-    st.session_state[scale_key] = 100
-if st.session_state.get("reset_scale", False):
-    st.session_state[scale_key] = 100
-    st.session_state["reset_scale"] = False  # reset the flag
 
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
@@ -46,6 +41,8 @@ if uploaded_file:
         st.session_state["y_scaled"] = 0
     if "last_scale" not in  st.session_state:   
         st.session_state["last_scale"] = 0
+    if scale_key not in  st.session_state:   
+        st.session_state[scale_key] = 100
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
@@ -62,16 +59,18 @@ if uploaded_file:
     st.sidebar.header("🪑 Adjust Pouf")
     scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
     st.write(f'scale {scale}.')
-    st.write(f'scale {st.session_state[scale_key]}.')
+    st.write(f'scale_key {st.session_state[scale_key]}.')
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
-        rerun=True
-        st.session_state["reset_scale"] = True
-       
+        st.session_state["x_scaled"]=0
+        st.session_state["y_scaled"]=0       
+        st.session_state[scale_key] = 100
+  
     if scale != st.session_state["last_scale"]:
         rerun=True;
         st.session_state["last_scale"]=scale
+        
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
@@ -124,8 +123,6 @@ if uploaded_file:
         st.session_state["last_image"] = result
 
         if rerun:
-            st.session_state["x_scaled"]=0
-            st.session_state["y_scaled"]=0
             st.experimental_rerun()
 
         # Download
