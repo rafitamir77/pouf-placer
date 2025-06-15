@@ -5,7 +5,7 @@ import io
 from streamlit_drawable_canvas import st_canvas
 
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
 
 # Load pouf image
