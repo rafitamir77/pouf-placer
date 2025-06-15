@@ -24,6 +24,16 @@ if uploaded_file:
         drawing_mode="point",
         display_toolbar=False,
         key="canvas"
-    )
+    )    
+    if canvas_result.image_data is not None:
+        st.subheader("🖌️ Canvas Image Data (as preview)")
+        st.image(canvas_result.image_data, caption="Your Drawing")
+
+        st.subheader("📄 JSON Drawing Data")
+        st.json(canvas_result.json_data)
+    else:
+        st.info("✏️ Start drawing on the canvas to see the output here.")
+
+    
 else:
     st.info("⬆️ Upload a .jpg or .png image to begin drawing.")
