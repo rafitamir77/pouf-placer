@@ -36,7 +36,7 @@ if uploaded_file:
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=1,
         stroke_color="white",
-        background_image=room_image,
+        background_image=room_image.convert("RGB"),
         update_streamlit=True,
         height=room_image.height,
         width=room_image.width,
