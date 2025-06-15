@@ -74,9 +74,9 @@ if uploaded_file:
         st.session_state["last_scale"]=scale
 
     pouf_options = {
-    "Design 1": "assets/pouf1.png",
-    "Design 2": "assets/pouf2.png",
-    "Design 3": "assets/pouf3.png"
+    "Beige Peacock": "assets/pouf1.png",
+    "Blue Peacock": "assets/pouf1.png",
+    "Red Peacock": "assets/pouf1.png"
 }
     selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
     pouf_image = Image.open(pouf_options[selected_pouf])
