@@ -1,6 +1,6 @@
 streamlit==1.27.2
 opencv-python-headless
-streamlit-drawable-canvas
+streamlit-drawable-canvas==0.9.2
 Pillow
 numpy
 torch
