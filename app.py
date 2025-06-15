@@ -91,7 +91,8 @@ if uploaded_file:
         width=display_width,
         drawing_mode="point",
         display_toolbar=False,
-        key="canvas"
+        #key="canvas"
+        key=st.session_state.get("canvas_key", "canvas")
     )
     
     # If user clicked
