@@ -57,6 +57,11 @@ if uploaded_file:
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
+        st.session_state["last_scale"]=100
+        st.session_state["x_scaled"]=0
+        st.session_state["y_scaled"]=0
+        rerun=True
+        
     if scale != st.session_state["last_scale"]:
         rerun=True;
         st.session_state["last_scale"]=scale
