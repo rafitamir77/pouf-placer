@@ -127,6 +127,10 @@ if uploaded_file:
         # Place pouf
         overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
+        shadow = Image.new("RGBA", scaled_pouf.size, (0, 0, 0, 80))
+        blurred_shadow = shadow.filter(ImageFilter.GaussianBlur(8))
+        overlay.paste(blurred_shadow, (x_pos+5, y_pos+5), blurred_shadow)
+
         result = Image.alpha_composite(room_image, overlay)
 
         # Show result
