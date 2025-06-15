@@ -58,7 +58,7 @@ if uploaded_file:
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
     if scale != session_state["last_scale"]:
-        $rerun=True;
+        rerun=True;
         session_state["last_scale"]=scale
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
