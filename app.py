@@ -32,7 +32,7 @@ if uploaded_file:
     st.write(f'room_image.width {room_image.width}.')
     st.write(f'room_image.height {room_image.height}.')
 
-    canvas_result = st_canvas(
+    canvas_result1 = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=1,
         stroke_color="white",
