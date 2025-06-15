@@ -25,6 +25,10 @@ if uploaded_file:
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
 
+    print(f'aspect_ratio {aspect_ratio}.')
+    print(f'display_width {aspect_ratio}.')
+    print(f'display_height {display_height}.')
+
     if "last_image" in st.session_state:
         # Show latest image with pouf
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
