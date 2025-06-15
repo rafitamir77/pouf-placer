@@ -9,7 +9,7 @@ scale_key = "scale_slider"
 
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
-st.session_state[scale_key] = 100
+#st.session_state[scale_key] = 100
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png")
