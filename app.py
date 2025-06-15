@@ -57,6 +57,8 @@ if uploaded_file:
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
+    st.session_state[scale_key] = 100
+
     scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
     st.write(f'scale {scale}.')
     st.write(f'scale_key {st.session_state[scale_key]}.')
@@ -65,7 +67,6 @@ if uploaded_file:
             del st.session_state["last_image"]
         st.session_state["x_scaled"]=0
         st.session_state["y_scaled"]=0       
-        st.session_state[scale_key] = 100
         st.experimental_rerun()
   
     if scale != st.session_state["last_scale"]:
