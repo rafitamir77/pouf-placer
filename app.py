@@ -9,7 +9,8 @@ st.set_page_config(layout="wide")
 st.title("🛋️ Try a Pouf in Your Room!")
 
 # Load pouf image
-pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
+pouf_image = Image.open("assets/pouf1.png")
+#pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 
 # Upload room photo
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
