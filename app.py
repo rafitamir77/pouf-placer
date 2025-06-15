@@ -53,13 +53,14 @@ if uploaded_file:
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=5)
+    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=5, key="scale_slider")
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
         st.session_state["last_scale"]=100
         st.session_state["x_scaled"]=0
         st.session_state["y_scaled"]=0
+        st.session_state["scale_slider"] = 100
         rerun=True
         
     if scale != st.session_state["last_scale"]:
