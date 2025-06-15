@@ -25,13 +25,17 @@ if uploaded_file:
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
 
-    st.write(f'aspect_ratio {aspect_ratio}.')
-    st.write(f'display_width {display_width}.')
-    st.write(f'display_height {display_height}.')
-    st.write(f'room_image.width {room_image.width}.')
-    st.write(f'room_image.height {room_image.height}.')
+    #st.write(f'aspect_ratio {aspect_ratio}.')
+    #st.write(f'display_width {display_width}.')
+    #st.write(f'display_height {display_height}.')
+    #st.write(f'room_image.width {room_image.width}.')
+    #st.write(f'room_image.height {room_image.height}.')
 
-
+    rerun=False
+    if "x_scaled" not in  st.session_state:   
+        st.session_state["x_scaled"] = 0
+    if "y_scaled" not in  st.session_state:   
+        st.session_state["y_scaled"] = 0
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
@@ -72,6 +76,12 @@ if uploaded_file:
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
+        if x_scaled != st.session_state["x_scaled"] or \
+            y_scaled != st.session_state["y_scaled"]:
+            
+            st.session_state["x_scaled"] = x_scaled
+            st.session_state["y_scaled"] = y_scaled
+            rerun = True
 
         # Map click to original image
         new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
@@ -93,6 +103,9 @@ if uploaded_file:
         st.markdown("### 🖼️ Result Preview:")
         st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
+
+        if rerun:
+            st.experimental_rerun()
 
         # Download
         buf = io.BytesIO()  
