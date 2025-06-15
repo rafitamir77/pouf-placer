@@ -85,7 +85,7 @@ if uploaded_file:
 
         # Map click to original image
         Pouf_Ratio = 0.25
-        new_size = (int(room_image.width *Pouf_Ratio* scale / 100), int(room_image.height *Pouf_Ratio* scale / 100))
+        new_size = (int(display_width *Pouf_Ratio* scale / 100), int(display_height *Pouf_Ratio* scale / 100))
                 
         scale_x = room_image.width / display_width
         scale_y = room_image.height / display_height
