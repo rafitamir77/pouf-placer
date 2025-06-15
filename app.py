@@ -6,10 +6,10 @@ from streamlit_drawable_canvas import st_canvas
 
 Pouf_Ratio = 0.25
 scale_key = "scale_slider"
-st.session_state[scale_key] = 100
 
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
+st.session_state[scale_key] = 100
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png")
