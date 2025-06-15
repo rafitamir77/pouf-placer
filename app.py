@@ -10,7 +10,6 @@ st.title("🛋️ Try a Pouf in Your Room!")
 
 # Load pouf image
 pouf_image = Image.open("assets/pouf1.png")
-#pouf_image = Image.open("assets/pouf1.png").convert("RGBA")
 
 # Upload room photo
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
@@ -40,7 +39,6 @@ if uploaded_file:
     else:
         resized_room = resized_room;
         
-    st.image(resized_room, use_column_width=True)
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
     background_rgb = resized_room.convert("RGB") 
@@ -70,7 +68,7 @@ if uploaded_file:
     
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
-        st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
+        #st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
