@@ -32,18 +32,6 @@ if uploaded_file:
     st.write(f'room_image.width {room_image.width}.')
     st.write(f'room_image.height {room_image.height}.')
 
-    canvas_result = st_canvas(
-        fill_color="rgba(255, 165, 0, 0.3)",
-        stroke_width=1,
-        stroke_color="white",
-        background_image=room_image,
-        update_streamlit=True,
-        height=room_image.height,
-        width=room_image.width,
-        drawing_mode="point",
-        display_toolbar=False,
-        key="canvas"
-    )
 
 
     if "last_image" in st.session_state:
