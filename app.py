@@ -35,7 +35,9 @@ if uploaded_file:
     if "last_image" in st.session_state:
         # Show latest image with pouf
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
-
+    else:
+        resized_room = resized_room;
+        
     st.image(resized_room, use_column_width=True)
 
     # Convert resized image to NumPy RGB array (✅ required for canvas)
