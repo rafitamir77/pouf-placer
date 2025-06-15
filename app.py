@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image, ImageOps
 from streamlit_drawable_canvas import st_canvas
+import numpy as np  # <-- Make sure this is imported
 
 st.set_page_config(page_title="Image Canvas", layout="wide")
 
@@ -24,7 +25,7 @@ if uploaded_file:
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=3,
         stroke_color="red",
-        background_image=resized_image.copy().convert("RGB"),  # ✅ critical
+        background_image=np.array(resized_image),  # ✅ Convert to array
         update_streamlit=True,
         height=display_height,
         width=display_width,
