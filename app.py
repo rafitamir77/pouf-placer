@@ -72,7 +72,16 @@ if uploaded_file:
     if scale != st.session_state["last_scale"]:
         rerun=True;
         st.session_state["last_scale"]=scale
-        
+
+    pouf_options = {
+    "Design 1": "assets/pouf1.png",
+    "Design 2": "assets/pouf2.png",
+    "Design 3": "assets/pouf3.png"
+}
+    selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
+    pouf_image = Image.open(pouf_options[selected_pouf])
+
+  
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
