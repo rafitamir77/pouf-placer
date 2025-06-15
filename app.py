@@ -17,12 +17,12 @@ if uploaded_file:
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=3,
         stroke_color="red",
-        background_image=image,  # ✅ Convert to array
+        background_image=image, 
         update_streamlit=True,
         height=image.height,
         width=image.width,
-        drawing_mode="freedraw",
-        display_toolbar=True,
+        drawing_mode="point",
+        display_toolbar=False,
         key="canvas"
     )
 else:
