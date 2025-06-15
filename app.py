@@ -12,12 +12,6 @@ uploaded_file = st.file_uploader("📷 Upload image", type=["jpg", "jpeg", "png"
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
 
-    max_width = 500
-    aspect_ratio = image.height / image.width
-    display_width = min(image.width, max_width)
-    display_height = int(display_width * aspect_ratio)
-
-    resized_image = image.resize((display_width, display_height))
 
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
