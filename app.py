@@ -121,7 +121,6 @@ if uploaded_file:
             st.session_state["last_scale"]=100
             st.session_state["x_scaled"]=0
             st.session_state["y_scaled"]=0
-            st.session_state["scale_slider"] = 100
             st.session_state["scale_reset"] = True
             st.experimental_rerun()
 
