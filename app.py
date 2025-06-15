@@ -4,6 +4,7 @@ import numpy as np
 import io
 from streamlit_drawable_canvas import st_canvas
 
+Pouf_Ratio = 0.25
 
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
@@ -36,6 +37,8 @@ if uploaded_file:
         st.session_state["x_scaled"] = 0
     if "y_scaled" not in  st.session_state:   
         st.session_state["y_scaled"] = 0
+    if "last_scale" not in  st.session_state:   
+        st.session_state["last_scale"] = 0
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
@@ -54,7 +57,9 @@ if uploaded_file:
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
-
+    if scale != session_state["last_scale"]:
+        $rerun=True;
+        session_state["last_scale"]=scale
     # Canvas
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
@@ -84,13 +89,8 @@ if uploaded_file:
             rerun = True
 
         # Map click to original image
-        Pouf_Ratio = 0.25
         new_size = (int(display_width *Pouf_Ratio* scale / 100), int(display_height *Pouf_Ratio* scale / 100))
  
-        st.write(f'display_width {display_width}.')
-        st.write(f'display_height {display_height}.')
-        st.write(f'new_size {new_size[0]}.')
-        st.write(f'new_size {new_size[1]}.')
  
         scale_x = room_image.width / display_width
         scale_y = room_image.height / display_height
