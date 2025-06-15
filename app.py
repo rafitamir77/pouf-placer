@@ -27,7 +27,7 @@ if uploaded_file:
     canvas_result = st_canvas(
         fill_color="rgba(255, 0, 0, 0.3)",  # Red with some transparency
         stroke_width=3,
-        stroke_color="black",
+        stroke_color="white",
         background_image=image_resized,
         update_streamlit=True,
         height=canvas_height,
