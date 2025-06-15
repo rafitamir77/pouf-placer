@@ -6,7 +6,12 @@ from streamlit_drawable_canvas import st_canvas
 
 Pouf_Ratio = 0.25
 scale_key = "scale_slider"
-st.session_state[scale_key] = 100
+
+if scale_key not in st.session_state:
+    st.session_state[scale_key] = 100
+if st.session_state.get("reset_scale", False):
+    st.session_state[scale_key] = 100
+    st.session_state["reset_scale"] = False  # reset the flag
 
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
@@ -57,12 +62,13 @@ if uploaded_file:
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=3, key=scale_key)
+    scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
         rerun=True
-        
+        st.session_state["reset_scale"] = True
+       
     if scale != st.session_state["last_scale"]:
         rerun=True;
         st.session_state["last_scale"]=scale
