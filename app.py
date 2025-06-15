@@ -84,7 +84,9 @@ if uploaded_file:
             rerun = True
 
         # Map click to original image
-        new_size = (int(pouf_image.width * scale / 100), int(pouf_image.height * scale / 100))
+        Pouf_Ratio = 0.25
+        new_size = (int(room_image.width *Pouf_Ratio* scale / 100), int(room_image.height *Pouf_Ratio* scale / 100))
+                
         scale_x = room_image.width / display_width
         scale_y = room_image.height / display_height
         x_pos = int(x_scaled * scale_x - new_size[0] / 2)
@@ -100,8 +102,8 @@ if uploaded_file:
         result = Image.alpha_composite(room_image, overlay)
 
         # Show result
-        st.markdown("### 🖼️ Result Preview:")
-        st.image(result, use_column_width=True)
+        #st.markdown("### 🖼️ Result Preview:")
+        #st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
 
         if rerun:
