@@ -69,7 +69,7 @@ if uploaded_file:
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
-        st.session_state["x_scaled"]=0
+        st.session_state["x_scaled"]=0 
         st.session_state["y_scaled"]=0       
         st.session_state["reset_scale"]=True       
         st.session_state["canvas_key"] = str(np.random.rand())
