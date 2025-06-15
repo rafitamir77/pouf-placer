@@ -1,39 +1,45 @@
 import streamlit as st
 from PIL import Image, ImageOps
 from streamlit_drawable_canvas import st_canvas
-import numpy as np  # <-- Make sure this is imported
 
 st.set_page_config(page_title="Image Canvas", layout="wide")
 
-st.title("🖼️ Upload an Image and Draw on It")
+st.title("🖼️ Upload and Draw on Image")
 
-uploaded_file = st.file_uploader("📷 Upload image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload a JPG or PNG image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    image = Image.open(uploaded_file).convert("RGB")
+    # Fix image orientation and convert to RGB (no transparency!)
+    image = ImageOps.exif_transpose(Image.open(uploaded_file)).convert("RGB")
 
+    # Resize for canvas
+    max_display_width = 500
+    aspect_ratio = image.height / image.width
+    canvas_width = min(image.width, max_display_width)
+    canvas_height = int(canvas_width * aspect_ratio)
+    image_resized = image.resize((canvas_width, canvas_height)).convert("RGB")
+
+    st.subheader("🖼️ Preview")
+    st.image(image_resized, width=canvas_width)
+
+    st.subheader("📝 Draw on Image")
 
     canvas_result = st_canvas(
-        fill_color="rgba(255, 165, 0, 0.3)",
+        fill_color="rgba(255, 0, 0, 0.3)",  # Red with some transparency
         stroke_width=3,
-        stroke_color="red",
-        background_image=image, 
+        stroke_color="black",
+        background_image=image_resized,
         update_streamlit=True,
-        height=image.height,
-        width=image.width,
-        drawing_mode="point",
-        display_toolbar=False,
+        height=canvas_height,
+        width=canvas_width,
+        drawing_mode="freedraw",
         key="canvas"
-    )    
-    if canvas_result.image_data is not None:
-        st.subheader("🖌️ Canvas Image Data (as preview)")
-        st.image(canvas_result.image_data, caption="Your Drawing")
+    )
 
-        st.subheader("📄 JSON Drawing Data")
+    # Debug JSON
+    if canvas_result.json_data:
+        st.subheader("🧠 Drawing Data")
         st.json(canvas_result.json_data)
-    else:
-        st.info("✏️ Start drawing on the canvas to see the output here.")
 
-    
 else:
-    st.info("⬆️ Upload a .jpg or .png image to begin drawing.")
+    st.info("👆 Upload an image to start drawing.")
