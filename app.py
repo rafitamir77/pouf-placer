@@ -39,6 +39,8 @@ if uploaded_file:
         st.session_state["y_scaled"] = 0
     if "last_scale" not in  st.session_state:   
         st.session_state["last_scale"] = 0
+    if "scale_reset" not in  st.session_state:   
+        st.session_state["scale_reset"] = False
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
@@ -53,14 +55,10 @@ if uploaded_file:
 
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=5, key="scale_slider")
+    scale = st.sidebar.slider("Scale %", 20, 500, 100, step=5)
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
-        st.session_state["last_scale"]=100
-        st.session_state["x_scaled"]=0
-        st.session_state["y_scaled"]=0
-        st.session_state["scale_slider"] = 100
         rerun=True
         
     if scale != st.session_state["last_scale"]:
@@ -118,6 +116,11 @@ if uploaded_file:
         st.session_state["last_image"] = result
 
         if rerun:
+            st.session_state["last_scale"]=100
+            st.session_state["x_scaled"]=0
+            st.session_state["y_scaled"]=0
+            st.session_state["scale_slider"] = 100
+            st.session_state["scale_reset"] = True
             st.experimental_rerun()
 
         # Download
