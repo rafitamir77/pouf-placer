@@ -66,6 +66,7 @@ if uploaded_file:
         st.session_state["x_scaled"]=0
         st.session_state["y_scaled"]=0       
         st.session_state[scale_key] = 100
+        st.experimental_rerun()
   
     if scale != st.session_state["last_scale"]:
         rerun=True;
