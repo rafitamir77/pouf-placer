@@ -29,10 +29,6 @@ if uploaded_file:
     resized_room = room_image.resize((display_width, display_height))
 
     #st.write(f'aspect_ratio {aspect_ratio}.')
-    #st.write(f'display_width {display_width}.')
-    #st.write(f'display_height {display_height}.')
-    #st.write(f'room_image.width {room_image.width}.')
-    #st.write(f'room_image.height {room_image.height}.')
 
     rerun=False
     if "x_scaled" not in  st.session_state:   
@@ -64,8 +60,6 @@ if uploaded_file:
         st.session_state["reset_scale"]=False;
         
     scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
-    st.write(f'scale {scale}.')
-    st.write(f'scale_key {st.session_state[scale_key]}.')
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
