@@ -19,8 +19,6 @@ if uploaded_file:
 
     resized_image = image.resize((display_width, display_height))
 
-    st.image(resized_image, caption="📷 Preview", use_column_width=False)
-
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=3,
