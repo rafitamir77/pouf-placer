@@ -72,6 +72,7 @@ if uploaded_file:
         st.session_state["x_scaled"]=0
         st.session_state["y_scaled"]=0       
         st.session_state["reset_scale"]=True       
+        st.session_state["canvas_key"] = str(np.random.rand())
         st.experimental_rerun()
  
     if scale != st.session_state["last_scale"]:
