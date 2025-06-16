@@ -14,6 +14,7 @@ defaults = {
     "y_scaled": 0,
     "last_scale": 0,
     "reset_scale": False,
+    "selected_pouf": 0
     scale_key: 100
 }
 for key, value in defaults.items():
