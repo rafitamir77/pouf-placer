@@ -66,12 +66,14 @@ if uploaded_file:
     st.sidebar.header("🪑 Select a Pouf")
     cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
+    if selected_pouf != st.session_state["selected_pouf"]:
+        rerun=True;
+        st.session_state["selected_pouf"]=selected_pouf   
     for i, (label, path) in enumerate(pouf_options.items()):
         with cols[i]:
             st.sidebar.image(path, width=150)
             if st.sidebar.button(label):
                 selected_pouf = label
-                st.session_state["selected_pouf"] = selected_pouf
     pouf_image = Image.open(pouf_options[selected_pouf])
 
     st.sidebar.success(f"✅ selected: {selected_pouf}")
