@@ -9,21 +9,21 @@ max_display_width = 500
 scale_key = "scale_slider"
 rerun=False
 #st.write(f'xxx {xxx}.')
-defaults = {
-    "x_scaled": 0,
-    "y_scaled": 0,
-    "last_scale": 0,
-    "reset_scale": False,
-    "selected_pouf": 0,
-    scale_key: 100
-}
-for key, value in defaults.items():
-    st.session_state.setdefault(key, value)
 pouf_options = {
     "Beige Peacock": "assets/pouf1.png",
     "Red Peacock": "assets/pouf2.png",
     "Blue Peacock": "assets/pouf3.png"
 }    
+defaults = {
+    "x_scaled": 0,
+    "y_scaled": 0,
+    "last_scale": 0,
+    "reset_scale": False,
+    "selected_pouf": list(pouf_options.keys())[0],
+    scale_key: 100
+}
+for key, value in defaults.items():
+    st.session_state.setdefault(key, value)
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!") 
 # Upload room photo
