@@ -55,7 +55,14 @@ if uploaded_file:
     if st.session_state["reset_scale"]:
         st.session_state["scale_slider"] = 100
         st.session_state["reset_scale"]=False;       
-    st.sidebar.slider("Scale %", 10, 500,  step=3, key="scale_slider")
+    st.sidebar.slider(
+        "Scale %",
+        min_value=10,
+        max_value=500,
+        step=2,
+        value=st.session_state.get("scale_slider", 100),  # ⬅️ important
+        key="scale_slider"
+    )
     scale = st.session_state["scale_slider"]
     st.write(f'scale {scale}.')
     st.write(f'last_scale {st.session_state["last_scale"]}.')
