@@ -55,10 +55,11 @@ if uploaded_file:
     if st.session_state["reset_scale"]:
         st.session_state["scale_slider"] = 100
         st.session_state["reset_scale"]=False;       
-    scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state["scale_slider"], step=3, key="scale_slider")
+    st.sidebar.slider("Scale %", 20, 500,  st.session_state["scale_slider"], step=3, key="scale_slider")
+    scale = st.session_state["scale_slider"]
     st.write(f'scale {scale}.')
     st.write(f'last_scale {st.session_state["last_scale"]}.')
-    st.write(f'"scale_slider" {st.session_state["scale_slider"]}.')
+    st.write(f'scale_slider {st.session_state["scale_slider"]}.')
     st.write(f'reset_scale {st.session_state["reset_scale"]}.')
     if scale != st.session_state["last_scale"]:
         rerun=True
