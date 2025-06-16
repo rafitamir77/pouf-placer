@@ -67,6 +67,8 @@ if uploaded_file:
     st.sidebar.header("🪑 Select a Pouf")
     cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
+    st.write(f'selected_pouf {selected_pouf}.')
+    st.write(f'selected_pouf {st.session_state["selected_pouf"]}.')
     if selected_pouf != st.session_state["selected_pouf"]:
         rerun=True;
         st.session_state["selected_pouf"]=selected_pouf   
