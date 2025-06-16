@@ -82,7 +82,7 @@ if uploaded_file:
     selected_design = st.session_state.get("selected_design", list(pouf_options.keys())[0])
     for i, (label, path) in enumerate(pouf_options.items()):
         with cols[i]:
-            st.sidebar.image(path, use_column_width=True)
+            st.sidebar.image(path, width=150)
             if st.sidebar.button(label):
                 selected_design = label
                 st.session_state["selected_design"] = selected_design
