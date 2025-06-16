@@ -57,8 +57,6 @@ if uploaded_file:
         step=2,
         value=100
     )
-    st.write(f'scale {scale}.')
-    st.write(f'last_scale {st.session_state["last_scale"]}.')
     if scale != st.session_state["last_scale"]:
         rerun=True
         st.session_state["last_scale"]=scale
