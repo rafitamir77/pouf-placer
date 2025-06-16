@@ -127,6 +127,7 @@ if uploaded_file:
         shadow = Image.new("RGBA", pouf_image.size, (0, 0, 0, 100))  # black with ~40% opacity
         blurred_shadow = shadow.filter(ImageFilter.GaussianBlur(15))
         # Resize for realism
+        pouf_width, pouf_height = pouf_image.size
         blurred_shadow = blurred_shadow.resize((int(pouf_width * 0.95), int(pouf_height * 0.6)),resample=Image.BICUBIC)
 
         
