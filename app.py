@@ -63,8 +63,8 @@ if uploaded_file:
 
     #selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
 
-     st.sidebar.header("🪑 Select a Pouf")
-   cols = st.columns(len(pouf_options))
+    st.sidebar.header("🪑 Select a Pouf")
+    cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
     for i, (label, path) in enumerate(pouf_options.items()):
         with cols[i]:
