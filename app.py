@@ -72,8 +72,8 @@ if uploaded_file:
 
     pouf_options = {
     "Beige Peacock": "assets/pouf1.png",
-    "Blue Peacock": "assets/pouf2.png",
-    "Red Peacock": "assets/pouf3.png"
+    "Red Peacock": "assets/pouf2.png",
+    "Blue Peacock": "assets/pouf3.png"
 }
     selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
     pouf_image = Image.open(pouf_options[selected_pouf])
