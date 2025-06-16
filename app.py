@@ -87,7 +87,7 @@ if uploaded_file:
                 st.session_state["selected_pouf"] = selected_pouf
     pouf_image = Image.open(pouf_options[selected_pouf])
 
-    st.success(f"✅ You selected: {selected_pouf}")
+    st.sidebar.success(f"✅ You selected: {selected_pouf}")
 
   
     # Canvas
