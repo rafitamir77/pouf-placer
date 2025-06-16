@@ -7,12 +7,9 @@ from streamlit_drawable_canvas import st_canvas
 Pouf_Ratio = 0.25
 scale_key = "scale_slider"
 
-
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!")
 
-# Load pouf image
-pouf_image = Image.open("assets/pouf1.png")
 
 # Upload room photo
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
@@ -75,8 +72,8 @@ if uploaded_file:
 
     pouf_options = {
     "Beige Peacock": "assets/pouf1.png",
-    "Blue Peacock": "assets/pouf1.png",
-    "Red Peacock": "assets/pouf1.png"
+    "Blue Peacock": "assets/pouf2.png",
+    "Red Peacock": "assets/pouf3.png"
 }
     selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
     pouf_image = Image.open(pouf_options[selected_pouf])
