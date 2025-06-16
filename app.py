@@ -123,15 +123,20 @@ if uploaded_file:
 
         # Place pouf
         overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
-        overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
-        shadow = Image.new("RGBA", pouf_image.size, (0, 0, 0, 100))  # black with ~40% opacity
-        blurred_shadow = shadow.filter(ImageFilter.GaussianBlur(15))
+        # Create elliptical shadow
+        shadow_size = (int(pouf_width * 0.8), int(pouf_height * 0.25))
+        ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(ellipse)
+        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 60))  # translucent black
+
+        # Blur the ellipse
+        blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(8))
         # Resize for realism
         pouf_width, pouf_height = pouf_image.size
-        blurred_shadow = blurred_shadow.resize((int(pouf_width * 0.95), int(pouf_height * 0.6)),resample=Image.BICUBIC)
-
-        
-        overlay.paste(blurred_shadow, (x_pos+15, y_pos+15), blurred_shadow)
+        shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
+        shadow_y = y_pos + int(pouf_height * 0.85)
+        overlay.paste(blurred_shadow, (shadow_x, shadow_y), blurred_shadow)
+        overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
         result = Image.alpha_composite(room_image, overlay)
 
