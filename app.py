@@ -11,8 +11,8 @@ rerun=False
 #st.write(f'xxx {xxx}.')
 pouf_options = {
     "Beige Peacock": "assets/pouf1.png",
-    "Red Peacock": "assets/pouf2.png",
-    "Blue Peacock": "assets/pouf3.png"
+    "Red Peacock": "assets/pouf3.png",
+    "Blue Peacock": "assets/pouf2.png"
 }    
 defaults = {
     "x_scaled": 0,
