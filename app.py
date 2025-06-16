@@ -75,8 +75,8 @@ if uploaded_file:
             if st.sidebar.button(label):
                 selected_pouf = label
     if selected_pouf != st.session_state["selected_pouf"]:
-    rerun=True;
-    st.session_state["selected_pouf"]=selected_pouf   
+        rerun=True
+        st.session_state["selected_pouf"]=selected_pouf   
 
     st.write(f'selected_pouf2 {selected_pouf}.')
     st.write(f'selected_pouf2 {st.session_state["selected_pouf"]}.')
