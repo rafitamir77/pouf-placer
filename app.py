@@ -8,7 +8,7 @@ Pouf_Ratio = 0.25
 scale_key = "scale_slider"
 
 st.set_page_config(layout="wide") 
-st.title("🛋️ Try a Pouf in Your Room!")
+st.title("🛋️ Try a Pouf in Your Room!") 
 
 
 # Upload room photo
