@@ -70,7 +70,7 @@ if uploaded_file:
         rerun=True;
         st.session_state["last_scale"]=scale
 
-        pouf_options = {
+    pouf_options = {
         "Beige Peacock": "assets/pouf1.png",
         "Red Peacock": "assets/pouf2.png",
         "Blue Peacock": "assets/pouf3.png"
