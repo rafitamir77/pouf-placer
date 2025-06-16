@@ -67,11 +67,6 @@ if uploaded_file:
     st.sidebar.header("🪑 Select a Pouf")
     cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
-    st.write(f'selected_pouf {selected_pouf}.')
-    st.write(f'selected_pouf {st.session_state["selected_pouf"]}.')
-    if selected_pouf != st.session_state["selected_pouf"]:
-        rerun=True;
-        st.session_state["selected_pouf"]=selected_pouf   
     st.write(f'selected_pouf1 {selected_pouf}.')
     st.write(f'selected_pouf1 {st.session_state["selected_pouf"]}.')
     for i, (label, path) in enumerate(pouf_options.items()):
@@ -79,6 +74,10 @@ if uploaded_file:
             st.sidebar.image(path, width=150)
             if st.sidebar.button(label):
                 selected_pouf = label
+    if selected_pouf != st.session_state["selected_pouf"]:
+    rerun=True;
+    st.session_state["selected_pouf"]=selected_pouf   
+
     st.write(f'selected_pouf2 {selected_pouf}.')
     st.write(f'selected_pouf2 {st.session_state["selected_pouf"]}.')
     pouf_image = Image.open(pouf_options[selected_pouf])
