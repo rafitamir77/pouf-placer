@@ -72,6 +72,8 @@ if uploaded_file:
     if selected_pouf != st.session_state["selected_pouf"]:
         rerun=True;
         st.session_state["selected_pouf"]=selected_pouf   
+    st.write(f'selected_pouf1 {selected_pouf}.')
+    st.write(f'selected_pouf1 {st.session_state["selected_pouf"]}.')
     for i, (label, path) in enumerate(pouf_options.items()):
         with cols[i]:
             st.sidebar.image(path, width=150)
