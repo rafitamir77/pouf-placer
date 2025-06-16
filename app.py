@@ -127,10 +127,7 @@ if uploaded_file:
         shadow = Image.new("RGBA", pouf_image.size, (0, 0, 0, 100))  # black with ~40% opacity
         blurred_shadow = shadow.filter(ImageFilter.GaussianBlur(15))
         # Resize for realism
-        blurred_shadow = blurred_shadow.resize(
-            (int(pouf_width * 0.95), int(pouf_height * 0.6)),
-            resample=Image.BICUBIC 
-        )
+        blurred_shadow = blurred_shadow.resize((int(pouf_width * 0.95), int(pouf_height * 0.6)),resample=Image.BICUBIC)
 
         
         overlay.paste(blurred_shadow, (x_pos+15, y_pos+15), blurred_shadow)
