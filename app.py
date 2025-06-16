@@ -85,14 +85,7 @@ if uploaded_file:
 
     st.sidebar.success(f"✅ selected: {selected_pouf}")
 
-    if st.sidebar.button("🔄 Reset Canvas"):
-        if "last_image" in st.session_state:
-            del st.session_state["last_image"]
-        st.session_state["x_scaled"]=0 
-        st.session_state["y_scaled"]=0       
-        st.session_state["canvas_key"] = str(np.random.rand())
-        st.session_state["scale_slider"]=100       
-        st.experimental_rerun()  
+
     # Canvas
     background_rgb = resized_room.convert("RGB") 
 
