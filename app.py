@@ -79,6 +79,8 @@ if uploaded_file:
             st.sidebar.image(path, width=150)
             if st.sidebar.button(label):
                 selected_pouf = label
+    st.write(f'selected_pouf2 {selected_pouf}.')
+    st.write(f'selected_pouf2 {st.session_state["selected_pouf"]}.')
     pouf_image = Image.open(pouf_options[selected_pouf])
 
     st.sidebar.success(f"✅ selected: {selected_pouf}")
