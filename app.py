@@ -70,13 +70,24 @@ if uploaded_file:
         rerun=True;
         st.session_state["last_scale"]=scale
 
-    pouf_options = {
-    "Beige Peacock": "assets/pouf1.png",
-    "Red Peacock": "assets/pouf2.png",
-    "Blue Peacock": "assets/pouf3.png"
-}
+        pouf_options = {
+        "Beige Peacock": "assets/pouf1.png",
+        "Red Peacock": "assets/pouf2.png",
+        "Blue Peacock": "assets/pouf3.png"
+    }
     selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
     pouf_image = Image.open(pouf_options[selected_pouf])
+
+    cols = st.columns(len(pouf_options))
+    selected_design = st.session_state.get("selected_design", list(pouf_options.keys())[0])
+    for i, (label, path) in enumerate(pouf_options.items()):
+        with cols[i]:
+            st.image(path, use_column_width=True)
+            if st.button(label):
+                selected_design = label
+                st.session_state["selected_design"] = selected_design
+
+    st.success(f"✅ You selected: {selected_design}")
 
   
     # Canvas
