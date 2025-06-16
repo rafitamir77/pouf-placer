@@ -57,8 +57,10 @@ if uploaded_file:
         st.session_state[scale_key] = 100
         st.session_state["reset_scale"]=False;       
     scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
+    st.write(f'scale {scale}.')
+    st.write(f'scale {st.session_state["last_scale"]}.')
     if scale != st.session_state["last_scale"]:
-        rerun=True;
+        rerun=True
         st.session_state["last_scale"]=scale
 
 
@@ -67,8 +69,6 @@ if uploaded_file:
     st.sidebar.header("🪑 Select a Pouf")
     cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
-    st.write(f'selected_pouf1 {selected_pouf}.')
-    st.write(f'selected_pouf1 {st.session_state["selected_pouf"]}.')
     for i, (label, path) in enumerate(pouf_options.items()):
         with cols[i]:
             st.sidebar.image(path, width=150)
@@ -78,8 +78,6 @@ if uploaded_file:
         rerun=True
         st.session_state["selected_pouf"]=selected_pouf   
 
-    st.write(f'selected_pouf2 {selected_pouf}.')
-    st.write(f'selected_pouf2 {st.session_state["selected_pouf"]}.')
     pouf_image = Image.open(pouf_options[selected_pouf])
 
     st.sidebar.success(f"✅ selected: {selected_pouf}")
