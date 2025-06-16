@@ -6,7 +6,6 @@ from streamlit_drawable_canvas import st_canvas
 
 Pouf_Ratio = 0.25
 max_display_width = 500
-scale_key = "scale_slider"
 rerun=False
 #st.write(f'xxx {xxx}.')
 pouf_options = {
@@ -20,7 +19,7 @@ defaults = {
     "last_scale": 0,
     "reset_scale": False,
     "selected_pouf": list(pouf_options.keys())[0],
-    scale_key: 100
+    "scale_slider": 100
 }
 for key, value in defaults.items():
     st.session_state.setdefault(key, value)
@@ -54,12 +53,12 @@ if uploaded_file:
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
     if st.session_state["reset_scale"]:
-        st.session_state[scale_key] = 100
+        st.session_state["scale_slider"] = 100
         st.session_state["reset_scale"]=False;       
-    scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
+    scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state["scale_slider"], step=3, key="scale_slider")
     st.write(f'scale {scale}.')
     st.write(f'last_scale {st.session_state["last_scale"]}.')
-    st.write(f'scale_key {st.session_state[scale_key]}.')
+    st.write(f'"scale_slider" {st.session_state["scale_slider"]}.')
     st.write(f'reset_scale {st.session_state["reset_scale"]}.')
     if scale != st.session_state["last_scale"]:
         rerun=True
