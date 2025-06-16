@@ -17,8 +17,7 @@ defaults = {
     "x_scaled": 0,
     "y_scaled": 0,
     "last_scale": 0,
-    "selected_pouf": list(pouf_options.keys())[0],
-    "scale_slider": 100
+    "selected_pouf": list(pouf_options.keys())[0]
 }
 for key, value in defaults.items():
     st.session_state.setdefault(key, value)
@@ -51,17 +50,15 @@ if uploaded_file:
     # Sidebar controls
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    st.sidebar.slider(
+    scale= st.sidebar.slider(
         "Scale %",
         min_value=10,
         max_value=500,
         step=2,
-        key="scale_slider"
+        value=100
     )
-    scale = st.session_state["scale_slider"]
     st.write(f'scale {scale}.')
     st.write(f'last_scale {st.session_state["last_scale"]}.')
-    st.write(f'scale_slider {st.session_state["scale_slider"]}.')
     if scale != st.session_state["last_scale"]:
         rerun=True
         st.session_state["last_scale"]=scale
