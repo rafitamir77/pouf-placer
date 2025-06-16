@@ -5,12 +5,26 @@ import io
 from streamlit_drawable_canvas import st_canvas
 
 Pouf_Ratio = 0.25
+max_display_width = 500
 scale_key = "scale_slider"
-
+rerun=False
+#st.write(f'xxx {xxx}.')
+defaults = {
+    "x_scaled": 0,
+    "y_scaled": 0,
+    "last_scale": 0,
+    "reset_scale": False,
+    scale_key: 100
+}
+for key, value in defaults.items():
+    st.session_state.setdefault(key, value)
+pouf_options = {
+    "Beige Peacock": "assets/pouf1.png",
+    "Red Peacock": "assets/pouf2.png",
+    "Blue Peacock": "assets/pouf3.png"
+}    
 st.set_page_config(layout="wide") 
 st.title("🛋️ Try a Pouf in Your Room!") 
-
-
 # Upload room photo
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
 
@@ -19,44 +33,30 @@ if uploaded_file:
     room_image = ImageOps.exif_transpose(Image.open(uploaded_file)).convert("RGBA")
 
     # Resize for canvas display
-    max_display_width = 500
     aspect_ratio = room_image.height / room_image.width
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
-
-    #st.write(f'aspect_ratio {aspect_ratio}.')
-
-    rerun=False
-    if "x_scaled" not in  st.session_state:   
-        st.session_state["x_scaled"] = 0
-    if "y_scaled" not in  st.session_state:   
-        st.session_state["y_scaled"] = 0
-    if "last_scale" not in  st.session_state:   
-        st.session_state["last_scale"] = 0
-    if "reset_scale" not in  st.session_state:   
-        st.session_state["reset_scale"] = False
-    if scale_key not in  st.session_state:   
-        st.session_state[scale_key] = 100
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
         resized_room = st.session_state["last_image"].resize((display_width, display_height))
     else:
         resized_room = resized_room;
-        
 
-    # Convert resized image to NumPy RGB array (✅ required for canvas)
-    background_rgb = resized_room.convert("RGB") 
-    #background_rgb = resized_room
-
+    # Sidebar controls
+    # Sidebar controls
+    # Sidebar controls
+    # Sidebar controls
+    # Sidebar controls
+    # Sidebar controls
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
     if st.session_state["reset_scale"]:
         st.session_state[scale_key] = 100
-        st.session_state["reset_scale"]=False;
-        
+        st.session_state["reset_scale"]=False;       
     scale = st.sidebar.slider("Scale %", 20, 500,  st.session_state[scale_key], step=3, key=scale_key)
+ 
     if st.sidebar.button("🔄 Reset Canvas"):
         if "last_image" in st.session_state:
             del st.session_state["last_image"]
@@ -70,12 +70,8 @@ if uploaded_file:
         rerun=True;
         st.session_state["last_scale"]=scale
 
-    pouf_options = {
-        "Beige Peacock": "assets/pouf1.png",
-        "Red Peacock": "assets/pouf2.png",
-        "Blue Peacock": "assets/pouf3.png"
-    }
-    selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
+
+    #selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
 
     cols = st.columns(len(pouf_options))
     selected_pouf = st.session_state.get("selected_pouf", list(pouf_options.keys())[0])
@@ -91,6 +87,8 @@ if uploaded_file:
 
   
     # Canvas
+    background_rgb = resized_room.convert("RGB") 
+
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
