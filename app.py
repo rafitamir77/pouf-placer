@@ -17,7 +17,6 @@ defaults = {
     "x_scaled": 0,
     "y_scaled": 0,
     "last_scale": 0,
-    "reset_scale": False,
     "selected_pouf": list(pouf_options.keys())[0],
     "scale_slider": 100
 }
@@ -52,22 +51,17 @@ if uploaded_file:
     # Sidebar controls
     # Sidebar controls
     st.sidebar.header("🪑 Adjust Pouf")
-    if st.session_state["reset_scale"]:
-        st.session_state["scale_slider"] = 100
-        st.session_state["reset_scale"]=False;       
     st.sidebar.slider(
         "Scale %",
         min_value=10,
         max_value=500,
         step=2,
-        value=st.session_state.get("scale_slider", 100),  # ⬅️ important
         key="scale_slider"
     )
     scale = st.session_state["scale_slider"]
     st.write(f'scale {scale}.')
     st.write(f'last_scale {st.session_state["last_scale"]}.')
     st.write(f'scale_slider {st.session_state["scale_slider"]}.')
-    st.write(f'reset_scale {st.session_state["reset_scale"]}.')
     if scale != st.session_state["last_scale"]:
         rerun=True
         st.session_state["last_scale"]=scale
@@ -96,8 +90,8 @@ if uploaded_file:
             del st.session_state["last_image"]
         st.session_state["x_scaled"]=0 
         st.session_state["y_scaled"]=0       
-        st.session_state["reset_scale"]=True       
         st.session_state["canvas_key"] = str(np.random.rand())
+        st.session_state["scale_slider"]=100       
         st.experimental_rerun()  
     # Canvas
     background_rgb = resized_room.convert("RGB") 
