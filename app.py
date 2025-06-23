@@ -22,7 +22,7 @@ defaults = {
 for key, value in defaults.items():
     st.session_state.setdefault(key, value)
 st.set_page_config(layout="wide") 
-st.title("🛋️ Try a Pouf in Your Room!") 
+st.title("🛋️ Try a Pouf in Your Room!!!")  
 # Upload room photo
 uploaded_file = st.file_uploader("📷 Upload your room photo", type=["jpg", "png", "jpeg"])
 
@@ -35,8 +35,12 @@ if uploaded_file:
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
+    st.session_state["resized_room"] = resized_room.copy()
 
-    resized_room = st.session_state.get("last_image", resized_room).resize((display_width, display_height))
+    if "last_image" in st.session_state:
+        # Show latest image with pouf
+        resized_room = st.session_state["last_image"]
+
 
     # Sidebar controls
     # Sidebar controls
@@ -97,7 +101,7 @@ if uploaded_file:
     
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
-        #st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
+        st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
@@ -114,17 +118,24 @@ if uploaded_file:
  
         scale_x = room_image.width / display_width
         scale_y = room_image.height / display_height
-        x_pos = int(x_scaled * scale_x - new_size[0] / 2)
-        y_pos = int(y_scaled * scale_y - new_size[1] / 2)
+        x_pos = int(x_scaled - new_size[0] / 2)
+        y_pos = int(y_scaled - new_size[1] / 2)
 
+        st.markdown("### 🖼️ a Preview:")   
+        st.write(f'x_pos {x_pos}.')
+        st.write(f'y_pos {y_pos}.')
+        st.write(f'scale_x {scale_x}.')
+        st.write(f'scale_y {scale_y}.')
+        st.write(f'x_scaled {x_scaled}.')
+        st.write(f'y_scaled {y_scaled}.')
 
         # Resize pouf
         scaled_pouf = pouf_image.resize(new_size)
 
         # Place pouf
-        overlay = Image.new("RGBA", room_image.size, (255, 255, 255, 0))
+        overlay = Image.new("RGBA", resized_room.size, (255, 255, 255, 0))
         # Create elliptical shadow
-        pouf_width, pouf_height = pouf_image.size
+        pouf_width, pouf_height = new_size
         shadow_size = (int(pouf_width * 0.8), int(pouf_height * 0.25))
         ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(ellipse)
@@ -138,8 +149,7 @@ if uploaded_file:
         overlay.paste(blurred_shadow, (shadow_x, shadow_y),     )
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
-        result = Image.alpha_composite(room_image, overlay)
-        result = overlay
+        result = Image.alpha_composite(resized_room, overlay)
 
         # Show result
         #st.markdown("### 🖼️ Result Preview:")
