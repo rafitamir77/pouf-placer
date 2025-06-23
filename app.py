@@ -35,7 +35,7 @@ if uploaded_file:
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
-    st.session_state["resized_room"] = resized_room.copy()
+    canvas_rgb = resized_room.convert("RGB") 
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
@@ -82,14 +82,13 @@ if uploaded_file:
 
 
     # Canvas
-    background_rgb = resized_room.convert("RGB") 
 
     st.info("🖱️ Click on the image below to place your pouf.")
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=1,
         stroke_color="white",
-        background_image=background_rgb,
+        background_image=canvas_rgb,
         update_streamlit=True,
         height=display_height,
         width=display_width,
@@ -101,7 +100,7 @@ if uploaded_file:
     
     # If user clicked
     if canvas_result.json_data and len(canvas_result.json_data["objects"]) > 0:
-        st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
+        #st.write("📍 Clicked at:", canvas_result.json_data["objects"][-1])
         last_click = canvas_result.json_data["objects"][-1]
         x_scaled = int(last_click["left"])
         y_scaled = int(last_click["top"])
@@ -146,7 +145,7 @@ if uploaded_file:
         # Resize for realism
         shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
         shadow_y = y_pos + int(pouf_height * 0.85)
-        overlay.paste(blurred_shadow, (shadow_x, shadow_y),     )
+        overlay.paste(blurred_shadow, (shadow_x, shadow_y),blurred_shadow     )
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
         result = Image.alpha_composite(resized_room, overlay)
