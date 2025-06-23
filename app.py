@@ -19,6 +19,7 @@ defaults = {
     "last_scale": 0,
     "selected_pouf": list(pouf_options.keys())[0]
 }
+st.write(f'selected_pouf {selected_pouf}.')
 for key, value in defaults.items():
     st.session_state.setdefault(key, value)
 st.set_page_config(layout="wide") 
