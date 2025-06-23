@@ -141,7 +141,7 @@ if uploaded_file:
         shadow_size = (int(pouf_width * 0.9), int(pouf_height * 0.3))
         ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(ellipse)
-        draw.ellipse((0, 0, *shadow_size), fill=(90, 65, 30, shadow_int))  # darker fill
+        draw.ellipse((0, 0, *shadow_size), fill=(45, 30, 15, shadow_int))  # darker fill
 
         # Blur the ellipse
         blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(light_blur))
