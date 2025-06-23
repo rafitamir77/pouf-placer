@@ -142,9 +142,6 @@ if uploaded_file:
         shadow_y=100
         overlay.paste(blurred_shadow, (shadow_x, shadow_y), blurred_shadow    )
 
-        bg = Image.new("RGBA", overlay.size, (255, 255, 255, 255))  # white background
-        preview_overlay = Image.alpha_composite(bg, overlay)
-        st.image(preview_overlay, caption="🖼️ Overlay Preview (with background)", use_column_width=True)
 
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
