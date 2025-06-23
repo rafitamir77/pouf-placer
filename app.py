@@ -36,8 +36,7 @@ if uploaded_file:
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
 
-    if "last_image" in st.session_state:
-        resized_room = st.session_state["last_image"].resize((display_width, display_height))
+    resized_room = st.session_state.get("last_image", resized_room).resize((display_width, display_height))
 
     # Sidebar controls
     # Sidebar controls
@@ -140,6 +139,7 @@ if uploaded_file:
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
         result = Image.alpha_composite(room_image, overlay)
+        result = overlay
 
         # Show result
         #st.markdown("### 🖼️ Result Preview:")
