@@ -143,7 +143,7 @@ if uploaded_file:
         blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(10))
         # Resize for realism
         shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
-        shadow_y = y_pos + int(pouf_height * 0.7)
+        shadow_y = y_pos + int(pouf_height * 0.75)
         overlay.paste(blurred_shadow, (shadow_x, shadow_y),blurred_shadow     )
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
