@@ -68,6 +68,7 @@ if uploaded_file:
     light_offset_y = st.sidebar.slider("Shadow Y Offset", -100, 100, 5)
     light_blur     = st.sidebar.slider("Blur", -10, 100, 5)
     shadow_int     = st.sidebar.slider("Shadow", -300, 300, 220)
+    pouf_opacity = st.sidebar.slider("Pouf Opacity", 0, 255, 255)
     #selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
 
     st.sidebar.header("🪑 Select a Pouf")
@@ -131,6 +132,14 @@ if uploaded_file:
 
         # Resize pouf
         scaled_pouf = pouf_image.resize(new_size)
+        scaled_pouf = scaled_pouf.convert("RGBA")
+
+        # Split channels
+        r, g, b, a = scaled_pouf.split()
+
+        # Apply new alpha
+        new_alpha = a.point(lambda p: int(pouf_opacity * (p / 255)))
+        scaled_pouf.putalpha(new_alpha)
 
         # Place pouf
         overlay = Image.new("RGBA", resized_room.size, (255, 255, 255, 0))
