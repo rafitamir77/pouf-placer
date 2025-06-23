@@ -135,6 +135,11 @@ if uploaded_file:
         # Resize for realism
         shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
         shadow_y = y_pos + int(pouf_height * 0.85)
+        
+        x_pos = 100
+        y_pos = 100
+        shadow_x= 100
+        shadow_y=100
         overlay.paste(blurred_shadow, (shadow_x, shadow_y), blurred_shadow    )
 
         bg = Image.new("RGBA", overlay.size, (255, 255, 255, 255))  # white background
