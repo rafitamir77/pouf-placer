@@ -136,11 +136,12 @@ if uploaded_file:
         shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
         shadow_y = y_pos + int(pouf_height * 0.85)
         overlay.paste(blurred_shadow, (shadow_x, shadow_y),     )
-        #overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
+        st.image(overlay, use_column_width=True)
+
+        overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
         result = Image.alpha_composite(room_image, overlay)
-        result = overlay
-
+        
         # Show result
         #st.markdown("### 🖼️ Result Preview:")
         #st.image(result, use_column_width=True)
