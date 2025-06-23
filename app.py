@@ -19,7 +19,6 @@ defaults = {
     "last_scale": 0,
     "selected_pouf": list(pouf_options.keys())[0]
 }
-st.write(f'selected_pouf {selected_pouf}.')
 for key, value in defaults.items():
     st.session_state.setdefault(key, value)
 st.set_page_config(layout="wide") 
@@ -76,6 +75,7 @@ if uploaded_file:
     if selected_pouf != st.session_state["selected_pouf"]:
         rerun=True
         st.session_state["selected_pouf"]=selected_pouf   
+    st.write(f'selected_pouf {selected_pouf}.')
 
     pouf_image = Image.open(pouf_options[selected_pouf])
 
