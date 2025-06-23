@@ -35,11 +35,13 @@ if uploaded_file:
     display_width = min(room_image.width, max_display_width)
     display_height = int(display_width * aspect_ratio)
     resized_room = room_image.resize((display_width, display_height))
-    canvas_rgb = resized_room.convert("RGB") 
 
     if "last_image" in st.session_state:
         # Show latest image with pouf
-        resized_room = st.session_state["last_image"]
+        canvas_rgb = st.session_state["last_image"]
+    else:
+        canvas_rgb = resized_room.convert("RGB") 
+   
 
 
     # Sidebar controls
