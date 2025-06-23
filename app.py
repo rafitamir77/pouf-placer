@@ -123,14 +123,7 @@ if uploaded_file:
         x_pos = int(x_scaled - new_size[0] / 2)
         y_pos = int(y_scaled - new_size[1] / 2)
 
-        st.markdown("### 🖼️ a Preview:")   
-        st.write(f'x_pos {x_pos}.')
-        st.write(f'y_pos {y_pos}.')
-        st.write(f'scale_x {scale_x}.')
-        st.write(f'scale_y {scale_y}.')
-        st.write(f'x_scaled {x_scaled}.')
-        st.write(f'y_scaled {y_scaled}.')
-        st.write(f'rerun {rerun}.')
+
 
         # Resize pouf
         scaled_pouf = pouf_image.resize(new_size)
@@ -139,13 +132,15 @@ if uploaded_file:
         overlay = Image.new("RGBA", resized_room.size, (255, 255, 255, 0))
         # Create elliptical shadow
         pouf_width, pouf_height = new_size
-        shadow_size = (int(pouf_width * 0.8), int(pouf_height * 0.25))
+        
+        
+        shadow_size = (int(pouf_width * 0.9), int(pouf_height * 0.3))
         ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(ellipse)
-        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 60))  # translucent black
+        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 100))  # darker fill
 
         # Blur the ellipse
-        blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(8))
+        blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(10))
         # Resize for realism
         shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
         shadow_y = y_pos + int(pouf_height * 0.85)
@@ -158,6 +153,21 @@ if uploaded_file:
         #st.markdown("### 🖼️ Result Preview:")
         #st.image(result, use_column_width=True)
         st.session_state["last_image"] = result
+        st.markdown("### 🖼️ a Preview:")   
+        st.write(f'x_pos {x_pos}.')
+        st.write(f'y_pos {y_pos}.')
+        st.write(f'scale_x {scale_x}.')
+        st.write(f'scale_y {scale_y}.')
+        st.write(f'x_scaled {x_scaled}.')
+        st.write(f'y_scaled {y_scaled}.')
+        st.write(f'pouf_width {pouf_width}.')
+        st.write(f'pouf_height {pouf_height}.')
+        st.markdown("### 🕳️ Shadow Preview")
+
+        shadow_buf = io.BytesIO()
+        blurred_shadow.save(shadow_buf, format="PNG")
+        shadow_bytes = shadow_buf.getvalue()
+        st.image(shadow_bytes, caption="Pouf Shadow", use_column_width=False)
 
         if rerun:
             st.experimental_rerun()
