@@ -75,7 +75,7 @@ if uploaded_file:
     if selected_pouf != st.session_state["selected_pouf"]:
         rerun=True
         st.session_state["selected_pouf"]=selected_pouf   
-    st.write(f'selected_pouf {selected_pouf}.')
+    #st.write(f'selected_pouf {selected_pouf}.')
 
     pouf_image = Image.open(pouf_options[selected_pouf])
 
@@ -128,6 +128,7 @@ if uploaded_file:
         st.write(f'scale_y {scale_y}.')
         st.write(f'x_scaled {x_scaled}.')
         st.write(f'y_scaled {y_scaled}.')
+        st.write(f'rerun {rerun}.')
 
         # Resize pouf
         scaled_pouf = pouf_image.resize(new_size)
