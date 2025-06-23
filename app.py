@@ -63,7 +63,11 @@ if uploaded_file:
         rerun=True
         st.session_state["last_scale"]=scale
 
-
+    st.sidebar.header("🪞 Shadow Offset (for debug)")
+    light_offset_x = st.sidebar.slider("Shadow X Offset", -100, 100, 10)
+    light_offset_y = st.sidebar.slider("Shadow Y Offset", -100, 100, 5)
+    light_blur     = st.sidebar.slider("Blur", -10, 100, 5)
+    shadow_int     = st.sidebar.slider("Shadow", -300, 300, 220)
     #selected_pouf = st.sidebar.selectbox("Choose Pouf Design", list(pouf_options.keys()))
 
     st.sidebar.header("🪑 Select a Pouf")
@@ -137,13 +141,14 @@ if uploaded_file:
         shadow_size = (int(pouf_width * 0.9), int(pouf_height * 0.3))
         ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(ellipse)
-        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 220))  # darker fill
+        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, shadow_int))  # darker fill
 
         # Blur the ellipse
-        blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(10))
+        blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(light_blur))
         # Resize for realism
-        shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2)
-        shadow_y = y_pos + int(pouf_height * 0.75)
+
+        shadow_x = x_pos + int((pouf_width - shadow_size[0]) / 2) + light_offset_x
+        shadow_y = y_pos + int(pouf_height * 0.75) + light_offset_y
         overlay.paste(blurred_shadow, (shadow_x, shadow_y),blurred_shadow     )
         overlay.paste(scaled_pouf, (x_pos, y_pos), mask=scaled_pouf)
 
