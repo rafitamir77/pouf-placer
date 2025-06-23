@@ -137,7 +137,7 @@ if uploaded_file:
         shadow_size = (int(pouf_width * 0.9), int(pouf_height * 0.3))
         ellipse = Image.new("RGBA", shadow_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(ellipse)
-        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 100))  # darker fill
+        draw.ellipse((0, 0, *shadow_size), fill=(0, 0, 0, 220))  # darker fill
 
         # Blur the ellipse
         blurred_shadow = ellipse.filter(ImageFilter.GaussianBlur(10))
@@ -164,10 +164,6 @@ if uploaded_file:
         st.write(f'pouf_height {pouf_height}.')
         st.markdown("### 🕳️ Shadow Preview")
 
-        shadow_buf = io.BytesIO()
-        blurred_shadow.save(shadow_buf, format="PNG")
-        shadow_bytes = shadow_buf.getvalue()
-        st.image(shadow_bytes, caption="Pouf Shadow", use_column_width=False)
 
         if rerun:
             st.experimental_rerun()
